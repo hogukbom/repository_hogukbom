@@ -23,11 +23,8 @@ jobs:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          context: .            # ★★★ 이 부분이 핵심입니다! 원격 Git 저장소가 아닌 로컬 파일을 사용합니다.
-          file: ./Dockerfile
-          push: true
-          no-cache: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/my-app:latest
+      - name: Build Docker image
+        run: docker build -t ${{ vars.DOCKERHUB_USERNAME }}/my-app:latest .
+
+      - name: Push Docker image
+        run: docker push ${{ vars.DOCKERHUB_USERNAME }}/my-app:latest
